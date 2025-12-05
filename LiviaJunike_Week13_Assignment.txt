@@ -1,0 +1,22 @@
+1. MVVM itu penting karena dia memisahkan antara urusan tampilan (UI) sama logika bisnis aplikasi. Jadi, kalau kita mau ubah desain UI atau update logic-nya,
+   kita cuma perlu utak-atik satu bagian tanpa bikin error di bagian lain, dan ini bikin codingan lebih gampang dites dan dikembangin.
+   Berdasarkan tutorial ini, pembagian filenya adalah:
+   - Model: File Movie.kt (ini representasi data/entity).
+   - View: File activity_main.xml dan MainActivity.kt (ini yang nampilin data ke layar).
+   - ViewModel: File MovieViewModel.kt (ini yang ngambil data dari Model buat dikasih ke View).
+
+2. Data Binding lebih efisien karena ViewModel bisa langsung "ngobrol" sama tampilan (View) tanpa kita harus repot-repot pakai findViewById lagi buat nyari komponen UI-nya.
+   Di tutorial ini, kita bahkan bisa langsung masukin data (stateFlow atau liveData) ke dalam elemen XML (kayak di RecyclerView), jadi kodenya jauh lebih ringkas dan bersih.
+
+3. Singleton Pattern di sini penting banget buat memastikan cuma ada satu instance database (MovieDatabase) yang jalan di seluruh aplikasi.
+   Masalahnya, bikin instance database baru itu proses yang "mahal" (berat di resource). Selain itu, Singleton menjaga supaya data nggak bentrok (mencegah Race Conditions)
+   kalau diakses barengan dari thread yang beda.
+
+4. Repository Pattern itu fungsinya jadi jembatan buat sinkronisasi data antara internet (API Service) sama database lokal di HP (Room).
+   Ini penting supaya aplikasi kita tetap bisa dibuka dan nampilin data walaupun user lagi nggak ada koneksi internet,
+   karena aplikasinya bakal ambil data yang tersimpan (cache) di database lokal.
+
+5. Di tutorial ini, WorkManager dipakai supaya aplikasi bisa update data secara berkala di background (misal tiap 1 jam), bahkan pas aplikasinya lagi ditutup.
+   Cara lain yang lebih sederhana (seperti yang dilakukan sebelum masuk Part 3) adalah me-refresh data hanya saat aplikasi dibuka oleh user. Di cara manual ini,
+   Repository akan ngecek atau ambil data baru dari API pas fungsi fetchMovies dipanggil saat aplikasi jalan,
+   tapi kekurangannya data nggak akan ter-update otomatis kalau aplikasinya nggak dibuka.
